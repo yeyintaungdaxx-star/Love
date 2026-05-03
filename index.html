@@ -63,9 +63,9 @@ button {
   color: white;
 }
 
-/* 🌸 aesthetic falling petals */
+/* 💞 aesthetic falling petals */
 .hearts::before {
-  content: "🌸";
+  content: "💞";
   position: fixed;
   font-size: 22px;
   animation: fall 6s linear infinite;
@@ -83,7 +83,8 @@ button {
 
 <div class="hearts"></div>
 
-<audio id="bgMusic" loop preload="auto">
+<!-- 🔊 audio -->
+<audio id="bgMusic" preload="auto">
   <source src="Perfect.mp3" type="audio/mpeg">
 </audio>
 
@@ -102,35 +103,22 @@ const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const music = document.getElementById("bgMusic");
 
-// ✅ YES CLICK (audio fix)
-yesBtn.addEventListener("click", () => {
-  music.currentTime = 0;
-  music.muted = false;
+// ✅ YES CLICK (FINAL AUDIO FIX)
+yesBtn.addEventListener("click", async () => {
+  try {
+    music.currentTime = 0;
+    await music.play(); // 👈 MUST (mobile fix)
 
-  music.play().then(() => {
-    // music start ပြီးမှ UI ပြောင်း
-    setTimeout(() => {
-      document.body.innerHTML = `
-        <div style="text-align:center;color:white;">
-          <h1>💕 ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
-          <img src="love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
-        </div>
-      `;
-    }, 300);
-  }).catch(() => {
-    alert("အသံမလာရင် Yes ကိုထပ်နှိပ်ပါ 🔊");
-  });
+    // 💗 UI change AFTER audio starts
+    document.body.innerHTML = `
+      <div style="text-align:center;color:white;">
+        <h1>💕 ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
+        <img src="love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
+      </div>
+    `;
 
-  // 🎉 confetti
-  for(let i=0;i<40;i++){
-    let div = document.createElement("div");
-    div.innerHTML = "🎉";
-    div.style.position="fixed";
-    div.style.left=Math.random()*100+"vw";
-    div.style.top="0";
-    div.style.fontSize="24px";
-    document.body.appendChild(div);
-    setTimeout(()=>div.remove(),2000);
+  } catch (err) {
+    alert("အသံမလာဘူး ❌\nVolume / File စစ်ပါ 🔊");
   }
 });
 
