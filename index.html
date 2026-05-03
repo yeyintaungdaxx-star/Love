@@ -6,13 +6,9 @@
 <title>For မီဟဲကို 💗</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,31 +26,24 @@ body {
   100% {background-position: 0% 50%;}
 }
 
-/* CARD */
 .card {
-  width: min(90%, 360px);
   text-align: center;
   background: rgba(255,255,255,0.25);
-  padding: 24px;
+  padding: 32px;
   border-radius: 24px;
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   position: relative;
 }
 
-h1, p {
-  color: white;
-  margin: 10px 0;
-}
+h1, p { color: white; }
 
-/* BUTTON AREA */
 .buttons {
   position: relative;
-  height: 120px;
-  margin-top: 20px;
+  height: 80px;
+  width: 200px;
 }
 
-/* BUTTONS */
 button {
   padding: 10px 18px;
   border: none;
@@ -63,19 +52,16 @@ button {
   cursor: pointer;
   position: absolute;
   transition: 0.2s;
-  touch-action: manipulation;
 }
 
 #yesBtn {
-  left: 10px;
-  top: 20px;
+  left: 20px;
   background: white;
   color: #ff4fa3;
 }
 
 #noBtn {
-  right: 10px;
-  top: 20px;
+  right: 20px;
   background: #ff4fa3;
   color: white;
 }
@@ -86,25 +72,15 @@ button {
   top: -90px;
   left: 50%;
   transform: translateX(-50%);
-  width: 110px;
+  width: 120px;
   border-radius: 15px;
   z-index: 20;
+  animation: pop 0.3s ease;
 }
 
-/* MOBILE FIX */
-@media (max-width: 480px) {
-  .card {
-    padding: 18px;
-  }
-
-  button {
-    font-size: 14px;
-    padding: 8px 14px;
-  }
-
-  .no-img {
-    width: 90px;
-  }
+@keyframes pop {
+  from { transform: translateX(-50%) scale(0); }
+  to { transform: translateX(-50%) scale(1); }
 }
 </style>
 </head>
@@ -135,34 +111,37 @@ yesBtn.addEventListener("click", () => {
   `;
 });
 
-/* NO MOVE + IMAGE CHANGE */
+/* NO */
 const images = ["cat1.jpg","cat2.jpg","cat3.jpg","cat4.jpg"];
 let imgIndex = 0;
 let currentImg = null;
 
 noBtn.addEventListener("click", () => {
 
-  // safe area (mobile + pc)
+  // button run away
   const maxX = window.innerWidth - 120;
   const maxY = window.innerHeight - 120;
 
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
   noBtn.style.right = "auto";
+  noBtn.style.bottom = "auto";
 
-  // image change only on click
-  if (currentImg) currentImg.remove();
-
+  // 👉 image changes ONLY when clicking again
   const img = document.createElement("img");
+
+  // remove previous image
+  if (currentImg) {
+    currentImg.remove();
+  }
+
   img.src = images[imgIndex];
   img.className = "no-img";
-
   document.querySelector(".card").appendChild(img);
+
   currentImg = img;
 
+  // next image index (ONLY change after click)
   imgIndex = (imgIndex + 1) % images.length;
 });
 </script>
