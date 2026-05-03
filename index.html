@@ -15,74 +15,63 @@ body {
   justify-content: center;
   align-items: center;
   font-family: system-ui, sans-serif;
-  overflow: hidden;
-
-  background: linear-gradient(-45deg, #ff9acb, #ffc3e6, #ff6fa5, #ffd6ec);
-  background-size: 400% 400%;
-  animation: gradientMove 8s ease infinite;
-}
-
-@keyframes gradientMove {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
+  background: #ffffff;
 }
 
 /* CARD */
 .card {
-  width: min(92%, 380px);
+  width: min(92%, 400px);
   text-align: center;
-  padding: 26px;
+  padding: 32px;
   border-radius: 24px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  background: #ffe6f0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   position: relative;
 }
 
 h1 {
-  font-size: 34px;
-  color: white;
-  margin-bottom: 10px;
+  font-size: 38px;
+  color: #ff4fa3;
 }
 
 p {
-  font-size: 20px;
-  color: white;
+  font-size: 22px;
+  color: #444;
 }
 
 /* BUTTON AREA */
 .buttons {
   position: relative;
-  height: 160px;
-  margin-top: 20px;
+  height: 180px;
+  margin-top: 25px;
 }
 
-/* BUTTON STYLE */
+/* BUTTON */
 button {
   width: 130px;
   padding: 12px;
   border: none;
-  border-radius: 22px;
+  border-radius: 25px;
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
   position: absolute;
+  transition: all 0.25s ease; /* 🔥 smooth move */
 }
 
 /* YES */
 #yesBtn {
   left: 10px;
-  top: 25px;
+  top: 30px;
   background: white;
   color: #ff4fa3;
+  border: 2px solid #ff4fa3;
 }
 
-/* NO (fixed so never disappears) */
+/* NO */
 #noBtn {
-  position: fixed;
-  left: 60%;
-  top: 55%;
+  left: 170px;
+  top: 30px;
   background: #ff4fa3;
   color: white;
 }
@@ -90,12 +79,12 @@ button {
 /* POPUP IMAGE */
 .popup-img {
   position: absolute;
-  top: -130px;
+  top: -110px;
   left: 50%;
   transform: translateX(-50%);
-  width: 150px;
+  width: 130px;
   border-radius: 16px;
-  animation: pop 0.4s ease;
+  animation: pop 0.3s ease;
 }
 
 @keyframes pop {
@@ -103,30 +92,28 @@ button {
   100% { transform: translateX(-50%) scale(1); }
 }
 
-/* YES SCREEN */
+/* LOVE SCREEN */
 .love-screen {
   position: fixed;
   inset: 0;
-  background: rgba(255, 0, 120, 0.25);
-  backdrop-filter: blur(6px);
+  background: rgba(255, 0, 120, 0.08);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  z-index: 999;
   text-align: center;
 }
 
-.love-screen img {
-  width: 220px;
-  border-radius: 20px;
-  margin-top: 10px;
-}
-
 .love-text {
-  color: white;
+  color: #ff4fa3;
   font-size: 30px;
   font-weight: bold;
+}
+
+.love-screen img {
+  width: 200px;
+  border-radius: 20px;
+  margin-top: 12px;
 }
 </style>
 </head>
@@ -139,10 +126,9 @@ button {
 
   <div class="buttons">
     <button id="yesBtn">Yes 💗</button>
+    <button id="noBtn">No 😭</button>
   </div>
 </div>
-
-<button id="noBtn">No 😭</button>
 
 <script>
 const yesBtn = document.getElementById("yesBtn");
@@ -153,31 +139,37 @@ let index = 0;
 
 const noImages = ["cat1.jpg","cat2.jpg","cat3.jpg","cat4.jpg"];
 
-/* YES */
+/* YES CLICK */
 yesBtn.addEventListener("click", () => {
 
   const screen = document.createElement("div");
   screen.className = "love-screen";
 
   screen.innerHTML = `
-    <div class="love-text"> အရမ်းချစ်တယ် 💞🎀 </div>
+    <div class="love-text">အရမ်းချစ်တယ် 🎀💞</div>
     <img src="love.jpg">
   `;
 
   document.body.appendChild(screen);
 });
 
-/* NO SAFE MOVE */
+/* NO MOVE */
 noBtn.addEventListener("click", () => {
 
-  const btnW = 130;
-  const btnH = 50;
+  const parent = document.querySelector(".buttons");
 
-  const maxX = window.innerWidth - btnW;
-  const maxY = window.innerHeight - btnH;
+  const btnW = noBtn.offsetWidth;
+  const btnH = noBtn.offsetHeight;
 
-  const x = Math.max(10, Math.random() * maxX);
-  const y = Math.max(10, Math.random() * maxY);
+  const maxX = parent.clientWidth - btnW;
+  const maxY = parent.clientHeight - btnH;
+
+  let x = Math.random() * maxX;
+  let y = Math.random() * maxY;
+
+  // edge padding (မလုံးဝထိပ်မထိ)
+  x = Math.max(5, x);
+  y = Math.max(5, y);
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
