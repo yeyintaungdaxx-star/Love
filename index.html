@@ -1,8 +1,11 @@
-<!DOCTYPE html><html lang="my">
+<!DOCTYPE html>
+<html lang="my">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>For မီဟဲကို 💗</title><style>
+<title>For မီဟဲကို 💗</title>
+
+<style>
 body {
   margin: 0;
   height: 100vh;
@@ -30,7 +33,7 @@ body {
   border-radius: 24px;
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  z-index: 2;
+  z-index: 10;
 }
 
 h1, p { color: white; }
@@ -47,6 +50,7 @@ button {
   font-size: 16px;
   cursor: pointer;
   position: absolute;
+  transition: 0.3s;
 }
 
 #yesBtn {
@@ -59,7 +63,6 @@ button {
   right: 20px;
   background: #ff4fa3;
   color: white;
-  transition: 0.3s;
 }
 
 .heart {
@@ -67,6 +70,7 @@ button {
   top: -20px;
   font-size: 20px;
   animation: fall linear forwards;
+  pointer-events: none;
 }
 
 @keyframes fall {
@@ -75,27 +79,54 @@ button {
     opacity: 0;
   }
 }
-</style></head><body><audio id="bgMusic" preload="auto">
+
+/* NO image floating */
+.no-img {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  border-radius: 15px;
+  z-index: 5;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="bgMusic">
   <source src="Perfect.mp3" type="audio/mpeg">
-</audio><div class="card">
+</audio>
+
+<!-- CLICK SOUND -->
+<audio id="clickSound">
+  <source src="click.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
   <h1>မီဟဲကို 💖</h1>
-  <p>မီ ကိုယ့်ကိုပြန်ချစ်နိုင်မလား? 💌</p>  <div class="buttons">
+  <p>မီ ကိုယ့်ကိုပြန်ချစ်နိုင်မလား? 💌</p>
+
+  <div class="buttons">
     <button id="yesBtn">Yes 💗</button>
     <button id="noBtn">No 🙈</button>
   </div>
-</div><script>
+</div>
+
+<script>
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const music = document.getElementById("bgMusic");
-
-let imageCount = 0;
+const clickSound = document.getElementById("clickSound");
 
 function playMusic(){
   music.currentTime = 0;
   music.play().catch(()=>{});
 }
 
-// YES
+/* YES */
 yesBtn.addEventListener("click", () => {
   playMusic();
 
@@ -117,46 +148,36 @@ yesBtn.addEventListener("click", () => {
   }
 });
 
-// NO
-function moveNo(){
-  const maxX = window.innerWidth - 120;
-  const maxY = window.innerHeight - 200;
+/* NO */
+noBtn.addEventListener("click", () => {
 
-  noBtn.style.left = Math.random()*maxX + "px";
-  noBtn.style.top = Math.random()*maxY + "px";
-  noBtn.style.position = "fixed";
+  // sound
+  clickSound.currentTime = 0;
+  clickSound.play().catch(()=>{});
 
-  const images = [
-    "cat1.jpg",
-    "cat2.jpg",
-    "cat3.jpg",
-    "cat4.jpg"
-  ];
+  // shrink button
+  noBtn.style.transition = "all 0.5s ease";
+  noBtn.style.transform = "scale(0)";
+  noBtn.style.opacity = "0";
+
+  setTimeout(() => {
+    noBtn.style.display = "none";
+  }, 500);
+
+  // show image TOP CENTER
+  const images = ["cat1.jpg","cat2.jpg","cat3.jpg","cat4.jpg"];
 
   const img = document.createElement("img");
   img.src = images[Math.floor(Math.random()*images.length)];
-
-  img.style.position = "fixed";
-  img.style.left = "50%";
-  img.style.top = "50%";
-  img.style.transform = "translate(-50%,-50%)";
-  img.style.width = "140px";
-  img.style.borderRadius = "15px";
-  img.style.zIndex = "10";
+  img.className = "no-img";
 
   document.body.appendChild(img);
-  setTimeout(()=>img.remove(),2000);
 
-  imageCount++;
-  if(imageCount > 5){
-    document.querySelectorAll("img").forEach((i,idx)=>{
-      if(idx > 2) i.remove();
-    });
-    imageCount = 2;
-  }
-}
+  setTimeout(() => {
+    img.remove();
+  }, 2000);
+});
+</script>
 
-noBtn.addEventListener("mouseenter", moveNo);
-noBtn.addEventListener("touchstart", moveNo);
-</script></body>
+</body>
 </html>
