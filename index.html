@@ -57,6 +57,7 @@ button {
   width: 120px;
 }
 
+/* YES */
 #yesBtn {
   left: 10px;
   top: 20px;
@@ -64,6 +65,7 @@ button {
   color: #ff4fa3;
 }
 
+/* NO */
 #noBtn {
   right: 10px;
   top: 20px;
@@ -87,7 +89,7 @@ button {
   100% { transform: translateX(-50%) scale(1); }
 }
 
-/* YES SCREEN */
+/* LOVE SCREEN */
 .love-screen {
   position: fixed;
   inset: 0;
@@ -116,12 +118,12 @@ button {
 <body>
 
 <div class="card">
-  <h1>မီဟဲကို💖</h1>
+  <h1>မီဟဲကို 💖</h1>
   <p>မီ ကိုယ့်ကိုပြန်ချစ်နိုင်မလား? 💌</p>
 
   <div class="buttons">
     <button id="yesBtn">Yes 💗</button>
-    <button id="noBtn">No 😭</button>
+    <button id="noBtn">No 🙈</button>
   </div>
 </div>
 
@@ -130,6 +132,7 @@ const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 
 let noImg = null;
+let index = 0;
 
 const noImages = [
   "cat1.jpg",
@@ -138,8 +141,6 @@ const noImages = [
   "cat4.jpg"
 ];
 
-let index = 0;
-
 /* YES CLICK */
 yesBtn.addEventListener("click", () => {
 
@@ -147,26 +148,32 @@ yesBtn.addEventListener("click", () => {
   screen.className = "love-screen";
 
   screen.innerHTML = `
-    <div class="love-text"> အရမ်းချစ်တယ်💞 </div>
+    <div class="love-text">💖 ကိုယ်အရမ်းပျော်တယ် 💖</div>
     <img src="love.jpg">
   `;
 
   document.body.appendChild(screen);
 });
 
-/* NO CLICK */
+/* NO CLICK (SAFE MOBILE MOVE) */
 noBtn.addEventListener("click", () => {
 
-  // move button
-  const maxX = window.innerWidth - 120;
-  const maxY = window.innerHeight - 120;
+  const btnWidth = 120;
+  const btnHeight = 50;
 
-  noBtn.style.left = Math.random() * maxX + "px";
-  noBtn.style.top = Math.random() * maxY + "px";
+  const maxX = window.innerWidth - btnWidth;
+  const maxY = window.innerHeight - btnHeight;
+
+  const x = Math.max(10, Math.random() * maxX);
+  const y = Math.max(10, Math.random() * maxY);
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
   noBtn.style.right = "auto";
+  noBtn.style.bottom = "auto";
 
-  // change image on each click
-  if(noImg) noImg.remove();
+  // image change on each click
+  if (noImg) noImg.remove();
 
   noImg = document.createElement("img");
   noImg.src = noImages[index];
