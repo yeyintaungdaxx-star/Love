@@ -103,8 +103,6 @@ h1, p { color: white; }
   align-items: center;
   flex-direction: column;
   z-index: 999;
-
-  /* animation */
   animation: fadeIn 0.6s ease;
 }
 
@@ -124,7 +122,7 @@ h1, p { color: white; }
   margin-bottom: 15px;
 }
 
-/* NEW ANIMATIONS */
+/* ANIMATIONS */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -161,13 +159,12 @@ let index = 0;
 
 /* YES */
 yesBtn.addEventListener("click", () => {
-
   const screen = document.createElement("div");
   screen.className = "love-screen";
 
   screen.innerHTML = `
     <div class="love-content">
-      <div class="love-text">အရမ်းချစ်တယ်💞🎀</div>
+      <div class="love-text">အရမ်းချစ်တယ်🎀💞</div>
       <img src="love.jpg">
     </div>
   `;
@@ -175,17 +172,26 @@ yesBtn.addEventListener("click", () => {
   document.body.appendChild(screen);
 });
 
-/* NO */
+/* NO (CENTER AVOID FIX) */
 noBtn.addEventListener("click", () => {
 
   const btnWidth = 120;
   const btnHeight = 50;
 
-  const maxX = window.innerWidth - btnWidth;
-  const maxY = window.innerHeight - btnHeight;
+  let x, y;
 
-  const x = Math.max(10, Math.random() * maxX);
-  const y = Math.max(10, Math.random() * maxY);
+  const safeMargin = 130;
+
+  do {
+    x = Math.random() * (window.innerWidth - btnWidth);
+    y = Math.random() * (window.innerHeight - btnHeight);
+
+  } while (
+    x > window.innerWidth / 2 - safeMargin &&
+    x < window.innerWidth / 2 + safeMargin &&
+    y > window.innerHeight / 2 - safeMargin &&
+    y < window.innerHeight / 2 + safeMargin
+  );
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
