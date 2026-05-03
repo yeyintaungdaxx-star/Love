@@ -33,6 +33,7 @@ body {
   border-radius: 24px;
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  z-index: 2;
 }
 
 h1, p { color: white; }
@@ -61,31 +62,31 @@ button {
   right: 20px;
   background: #ff4fa3;
   color: white;
+  transition: 0.3s;
 }
 
-/* 💞 aesthetic falling petals */
-.hearts::before {
-  content: "💞";
+/* hearts */
+.heart {
   position: fixed;
-  font-size: 22px;
-  animation: fall 6s linear infinite;
-  left: 50%;
+  top: -20px;
+  font-size: 20px;
+  animation: fall linear forwards;
 }
 
 @keyframes fall {
-  0% { transform: translate(-50%, -100px); opacity: 1; }
-  100% { transform: translate(-50%, 100vh); opacity: 0; }
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="hearts"></div>
-
-<!-- 🔊 audio -->
+<!-- AUDIO -->
 <audio id="bgMusic" preload="auto">
-  <source src="Perfect.mp3" type="audio/mpeg">
+  <source src="./Love/Perfect.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card">
@@ -103,50 +104,81 @@ const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const music = document.getElementById("bgMusic");
 
-// ✅ YES CLICK (FINAL AUDIO FIX)
-yesBtn.addEventListener("click", async () => {
-  try {
-    music.currentTime = 0;
-    await music.play(); // 👈 MUST (mobile fix)
+let imageCount = 0;
 
-    // 💗 UI change AFTER audio starts
-    document.body.innerHTML = `
-      <div style="text-align:center;color:white;">
-        <h1>💕 ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
-        <img src="love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
-      </div>
-    `;
+// 🔊 unlock audio (important for mobile)
+function playMusic(){
+  music.currentTime = 0;
+  music.play().catch(()=>{});
+}
 
-  } catch (err) {
-    alert("အသံမလာဘူး ❌\nVolume / File စစ်ပါ 🔊");
+// ================= YES =================
+yesBtn.addEventListener("click", () => {
+  playMusic();
+
+  document.body.innerHTML = `
+    <div style="text-align:center;color:white;z-index:2;">
+      <h1>💕 ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
+      <img src="./Love/love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
+    </div>
+  `;
+
+  // confetti hearts
+  for(let i=0;i<60;i++){
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = "💗";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.animationDuration = (2 + Math.random()*3) + "s";
+    document.body.appendChild(h);
+
+    setTimeout(()=>h.remove(),5000);
   }
 });
 
-// ❌ NO BUTTON
-noBtn.addEventListener("mouseenter", moveNo);
-noBtn.addEventListener("touchstart", moveNo);
-
+// ================= NO BUTTON =================
 function moveNo(){
-  const x = Math.random() * (window.innerWidth - 120);
-  const y = Math.random() * 200;
+  const maxX = window.innerWidth - 120;
+  const maxY = window.innerHeight - 200;
 
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+  noBtn.style.left = Math.random()*maxX + "px";
+  noBtn.style.top = Math.random()*maxY + "px";
+  noBtn.style.position = "fixed";
 
-  const images = ["cat1.jpg","cat2.jpg","cat3.jpg","cat4.jpg"];
-  const randomImg = images[Math.floor(Math.random() * images.length)];
+  const images = [
+    "./Love/cat1.jpg",
+    "./Love/cat2.jpg",
+    "./Love/cat3.jpg",
+    "./Love/cat4.jpg"
+  ];
 
   const img = document.createElement("img");
-  img.src = randomImg;
+  img.src = images[Math.floor(Math.random()*images.length)];
 
   img.style.position = "fixed";
-  img.style.width = "120px";
-  img.style.left = Math.random() * 80 + "vw";
-  img.style.top = Math.random() * 80 + "vh";
+  img.style.left = "50%";
+  img.style.top = "50%";
+  img.style.transform = "translate(-50%,-50%)";
+  img.style.width = "140px";
+  img.style.borderRadius = "15px";
+  img.style.zIndex = "10";
 
   document.body.appendChild(img);
-  setTimeout(() => img.remove(), 2000);
+
+  imageCount++;
+  setTimeout(()=>img.remove(), 2000);
+
+  // limit stacking
+  if(imageCount > 5){
+    document.querySelectorAll("img").forEach((i,idx)=>{
+      if(idx > 2) i.remove();
+    });
+    imageCount = 2;
+  }
 }
+
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
 </script>
 
 </body>
