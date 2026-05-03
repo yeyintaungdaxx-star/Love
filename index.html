@@ -12,9 +12,18 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  background: linear-gradient(135deg, #ff9acb, #ffc3e6);
+  font-family: system-ui, sans-serif;
   overflow: hidden;
+
+  background: linear-gradient(-45deg, #ff9acb, #ffc3e6, #ff6fa5, #ffd6ec);
+  background-size: 400% 400%;
+  animation: gradientMove 8s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
 }
 
 .card {
@@ -24,12 +33,9 @@ body {
   border-radius: 24px;
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  max-width: 320px;
-  width: 90%;
 }
 
-h1 { color: white; }
-p { color: white; }
+h1, p { color: white; }
 
 .buttons {
   position: relative;
@@ -56,10 +62,26 @@ button {
   background: #ff4fa3;
   color: white;
 }
+
+/* floating hearts */
+.hearts::before {
+  content: "💖 💕 💗 💓 💞";
+  position: fixed;
+  width: 100%;
+  animation: floatHearts 6s linear infinite;
+  font-size: 24px;
+}
+
+@keyframes floatHearts {
+  0% { transform: translateY(100vh); opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
 </style>
 </head>
 
 <body>
+
+<div class="hearts"></div>
 
 <audio id="bgMusic" loop>
   <source src="Perfect.mp3" type="audio/mpeg">
@@ -80,7 +102,25 @@ function sayYes(){
   const music = document.getElementById("bgMusic");
   music.play();
 
-  document.body.innerHTML = "<h1 style='color:white;text-align:center;'>💕 ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>";
+  document.body.innerHTML = `
+    <div style="text-align:center;color:white;">
+      <h1>💕 ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
+      <img src="love.jpg" style="width:200px;border-radius:20px;margin-top:20px;">
+    </div>
+  `;
+
+  // confetti
+  for(let i=0;i<40;i++){
+    let div = document.createElement("div");
+    div.innerHTML = "🎉";
+    div.style.position="fixed";
+    div.style.left=Math.random()*100+"vw";
+    div.style.top="0";
+    div.style.fontSize="24px";
+    document.body.appendChild(div);
+
+    setTimeout(()=>div.remove(),2000);
+  }
 }
 
 function moveNo(){
