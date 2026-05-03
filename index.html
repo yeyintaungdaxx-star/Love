@@ -76,7 +76,7 @@ button {
   }
 }
 </style></head><body><audio id="bgMusic" preload="auto">
-  <source src="./Love/Perfect.mp3" type="audio/mpeg">
+  <source src="Perfect.mp3" type="audio/mpeg">
 </audio><div class="card">
   <h1>မီဟဲကို 💖</h1>
   <p>မီ ကိုယ့်ကိုပြန်ချစ်နိုင်မလား? 💌</p>  <div class="buttons">
@@ -95,14 +95,14 @@ function playMusic(){
   music.play().catch(()=>{});
 }
 
-// ================= YES =================
+// YES
 yesBtn.addEventListener("click", () => {
   playMusic();
 
   document.body.innerHTML = `
     <div style="text-align:center;color:white;">
       <h1>ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
-      <img src="./Love/love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
+      <img src="love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
     </div>
   `;
 
@@ -117,7 +117,7 @@ yesBtn.addEventListener("click", () => {
   }
 });
 
-// ================= NO =================
+// NO
 function moveNo(){
   const maxX = window.innerWidth - 120;
   const maxY = window.innerHeight - 200;
@@ -127,10 +127,10 @@ function moveNo(){
   noBtn.style.position = "fixed";
 
   const images = [
-    "./Love/cat1.jpg",
-    "./Love/cat2.jpg",
-    "./Love/cat3.jpg",
-    "./Love/cat4.jpg"
+    "cat1.jpg",
+    "cat2.jpg",
+    "cat3.jpg",
+    "cat4.jpg"
   ];
 
   const img = document.createElement("img");
