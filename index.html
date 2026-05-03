@@ -63,18 +63,18 @@ button {
   color: white;
 }
 
-/* floating hearts */
+/* 🌸 aesthetic falling petals */
 .hearts::before {
-  content: "💖 💕 💗 💓 💞";
+  content: "🌸";
   position: fixed;
-  width: 100%;
-  animation: floatHearts 6s linear infinite;
-  font-size: 24px;
+  font-size: 22px;
+  animation: fall 6s linear infinite;
+  left: 50%;
 }
 
-@keyframes floatHearts {
-  0% { transform: translateY(100vh); opacity: 1; }
-  100% { transform: translateY(-10vh); opacity: 0; }
+@keyframes fall {
+  0% { transform: translate(-50%, -100px); opacity: 1; }
+  100% { transform: translate(-50%, 100vh); opacity: 0; }
 }
 </style>
 </head>
@@ -83,7 +83,7 @@ button {
 
 <div class="hearts"></div>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic" loop preload="auto">
   <source src="Perfect.mp3" type="audio/mpeg">
 </audio>
 
@@ -102,22 +102,26 @@ const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const music = document.getElementById("bgMusic");
 
-// YES CLICK
+// ✅ YES CLICK (audio fix)
 yesBtn.addEventListener("click", () => {
-  // play audio (mobile fix)
   music.currentTime = 0;
   music.muted = false;
-  music.play().catch(() => {});
 
-  // show result
-  document.body.innerHTML = `
-    <div style="text-align:center;color:white;">
-      <h1>💕 ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
-      <img src="love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
-    </div>
-  `;
+  music.play().then(() => {
+    // music start ပြီးမှ UI ပြောင်း
+    setTimeout(() => {
+      document.body.innerHTML = `
+        <div style="text-align:center;color:white;">
+          <h1>💕 ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
+          <img src="love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
+        </div>
+      `;
+    }, 300);
+  }).catch(() => {
+    alert("အသံမလာရင် Yes ကိုထပ်နှိပ်ပါ 🔊");
+  });
 
-  // confetti
+  // 🎉 confetti
   for(let i=0;i<40;i++){
     let div = document.createElement("div");
     div.innerHTML = "🎉";
@@ -130,7 +134,7 @@ yesBtn.addEventListener("click", () => {
   }
 });
 
-// NO BUTTON RUN
+// ❌ NO BUTTON
 noBtn.addEventListener("mouseenter", moveNo);
 noBtn.addEventListener("touchstart", moveNo);
 
