@@ -6,9 +6,13 @@
 <title>For မီဟဲကို 💗</title>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,23 +31,27 @@ body {
 }
 
 .card {
+  width: min(90%, 360px);
   text-align: center;
   background: rgba(255,255,255,0.25);
-  padding: 32px;
+  padding: 24px;
   border-radius: 24px;
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   position: relative;
 }
 
-h1, p { color: white; }
+h1, p {
+  color: white;
+}
 
 .buttons {
   position: relative;
-  height: 80px;
-  width: 200px;
+  height: 120px;
+  margin-top: 20px;
 }
 
+/* BUTTONS */
 button {
   padding: 10px 18px;
   border: none;
@@ -52,35 +60,21 @@ button {
   cursor: pointer;
   position: absolute;
   transition: 0.2s;
+  touch-action: manipulation;
 }
 
 #yesBtn {
-  left: 20px;
+  left: 10px;
+  top: 20px;
   background: white;
   color: #ff4fa3;
 }
 
 #noBtn {
-  right: 20px;
+  right: 10px;
+  top: 20px;
   background: #ff4fa3;
   color: white;
-}
-
-/* IMAGE */
-.no-img {
-  position: absolute;
-  top: -90px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  border-radius: 15px;
-  z-index: 20;
-  animation: pop 0.3s ease;
-}
-
-@keyframes pop {
-  from { transform: translateX(-50%) scale(0); }
-  to { transform: translateX(-50%) scale(1); }
 }
 </style>
 </head>
@@ -98,51 +92,21 @@ button {
 </div>
 
 <script>
-const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 
-/* YES */
-yesBtn.addEventListener("click", () => {
-  document.body.innerHTML = `
-    <div style="text-align:center;color:white;">
-      <h1>ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
-      <img src="love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
-    </div>
-  `;
-});
-
-/* NO */
-const images = ["cat1.jpg","cat2.jpg","cat3.jpg","cat4.jpg"];
-let imgIndex = 0;
-let currentImg = null;
-
+/* NO BUTTON MOVE ONLY */
 noBtn.addEventListener("click", () => {
 
-  // button run away
-  const maxX = window.innerWidth - 120;
-  const maxY = window.innerHeight - 120;
+  const maxX = window.innerWidth - 100;
+  const maxY = window.innerHeight - 100;
 
-  noBtn.style.left = Math.random() * maxX + "px";
-  noBtn.style.top = Math.random() * maxY + "px";
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
   noBtn.style.right = "auto";
   noBtn.style.bottom = "auto";
-
-  // 👉 image changes ONLY when clicking again
-  const img = document.createElement("img");
-
-  // remove previous image
-  if (currentImg) {
-    currentImg.remove();
-  }
-
-  img.src = images[imgIndex];
-  img.className = "no-img";
-  document.querySelector(".card").appendChild(img);
-
-  currentImg = img;
-
-  // next image index (ONLY change after click)
-  imgIndex = (imgIndex + 1) % images.length;
 });
 </script>
 
