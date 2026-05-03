@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="my">
+<!DOCTYPE html><html lang="my">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>For မီဟဲကို 💗</title>
-
-<style>
+<title>For မီဟဲကို 💗</title><style>
 body {
   margin: 0;
   height: 100vh;
@@ -65,7 +62,6 @@ button {
   transition: 0.3s;
 }
 
-/* hearts */
 .heart {
   position: fixed;
   top: -20px;
@@ -79,34 +75,21 @@ button {
     opacity: 0;
   }
 }
-</style>
-</head>
-
-<body>
-
-<!-- AUDIO -->
-<audio id="bgMusic" preload="auto">
+</style></head><body><audio id="bgMusic" preload="auto">
   <source src="./Love/Perfect.mp3" type="audio/mpeg">
-</audio>
-
-<div class="card">
+</audio><div class="card">
   <h1>မီဟဲကို 💖</h1>
-  <p>မီ ကိုယ့်ကိုပြန်ချစ်နိုင်မလား? 💌</p>
-
-  <div class="buttons">
+  <p>မီ ကိုယ့်ကိုပြန်ချစ်နိုင်မလား? 💌</p>  <div class="buttons">
     <button id="yesBtn">Yes 💗</button>
     <button id="noBtn">No 🙈</button>
   </div>
-</div>
-
-<script>
+</div><script>
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const music = document.getElementById("bgMusic");
 
 let imageCount = 0;
 
-// 🔊 unlock audio (important for mobile)
 function playMusic(){
   music.currentTime = 0;
   music.play().catch(()=>{});
@@ -117,13 +100,12 @@ yesBtn.addEventListener("click", () => {
   playMusic();
 
   document.body.innerHTML = `
-    <div style="text-align:center;color:white;z-index:2;">
-      <h1>💕 ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
-      <img src="love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
+    <div style="text-align:center;color:white;">
+      <h1>ကိုယ်အရမ်းပျော်သွားပြီ 😭💞</h1>
+      <img src="./Love/love.jpg" style="width:220px;border-radius:20px;margin-top:20px;">
     </div>
   `;
 
-  // confetti hearts
   for(let i=0;i<60;i++){
     const h = document.createElement("div");
     h.className = "heart";
@@ -131,12 +113,11 @@ yesBtn.addEventListener("click", () => {
     h.style.left = Math.random()*100 + "vw";
     h.style.animationDuration = (2 + Math.random()*3) + "s";
     document.body.appendChild(h);
-
     setTimeout(()=>h.remove(),5000);
   }
 });
 
-// ================= NO BUTTON =================
+// ================= NO =================
 function moveNo(){
   const maxX = window.innerWidth - 120;
   const maxY = window.innerHeight - 200;
@@ -146,10 +127,10 @@ function moveNo(){
   noBtn.style.position = "fixed";
 
   const images = [
-    "cat1.jpg",
-    "cat2.jpg",
-    "cat3.jpg",
-    "cat4.jpg"
+    "./Love/cat1.jpg",
+    "./Love/cat2.jpg",
+    "./Love/cat3.jpg",
+    "./Love/cat4.jpg"
   ];
 
   const img = document.createElement("img");
@@ -164,11 +145,9 @@ function moveNo(){
   img.style.zIndex = "10";
 
   document.body.appendChild(img);
+  setTimeout(()=>img.remove(),2000);
 
   imageCount++;
-  setTimeout(()=>img.remove(), 2000);
-
-  // limit stacking
   if(imageCount > 5){
     document.querySelectorAll("img").forEach((i,idx)=>{
       if(idx > 2) i.remove();
@@ -179,7 +158,5 @@ function moveNo(){
 
 noBtn.addEventListener("mouseenter", moveNo);
 noBtn.addEventListener("touchstart", moveNo);
-</script>
-
-</body>
+</script></body>
 </html>
