@@ -82,7 +82,7 @@ button {
   }
 }
 
-/* NO IMAGE (TOP OF CARD) */
+/* NO IMAGE */
 .no-img {
   position: absolute;
   top: -90px;
@@ -103,12 +103,10 @@ button {
 
 <body>
 
-<!-- MUSIC -->
 <audio id="bgMusic">
   <source src="Perfect.mp3" type="audio/mpeg">
 </audio>
 
-<!-- CLICK SOUND -->
 <audio id="clickSound">
   <source src="click.mp3" type="audio/mpeg">
 </audio>
@@ -134,7 +132,7 @@ function playMusic(){
   music.play().catch(()=>{});
 }
 
-/* YES */
+/* YES BUTTON */
 yesBtn.addEventListener("click", () => {
   playMusic();
 
@@ -156,37 +154,28 @@ yesBtn.addEventListener("click", () => {
   }
 });
 
-/* NO (FIXED TOP IMAGE) */
+/* NO BUTTON - SMOOTH SHRINK */
 noBtn.addEventListener("click", () => {
 
-  // sound
   clickSound.currentTime = 0;
   clickSound.play().catch(()=>{});
 
-  // shrink button
-  noBtn.style.transition = "all 0.5s ease";
-  noBtn.style.transform = "scale(0)";
-  noBtn.style.opacity = "0";
+  let scale = 1;
 
-  setTimeout(() => {
-    noBtn.style.display = "none";
-  }, 500);
+  const shrink = setInterval(() => {
+    scale -= 0.05;
 
-  // random image
+    noBtn.style.transform = `scale(${scale})`;
+    noBtn.style.opacity = scale;
+
+    if (scale <= 0) {
+      clearInterval(shrink);
+      noBtn.style.display = "none";
+    }
+  }, 30);
+
+  // image popup
   const images = ["cat1.jpg","cat2.jpg","cat3.jpg","cat4.jpg"];
 
   const img = document.createElement("img");
-  img.src = images[Math.floor(Math.random()*images.length)];
-  img.className = "no-img";
-
-  // 👉 IMPORTANT: append inside card (NOT body)
-  document.querySelector(".card").appendChild(img);
-
-  setTimeout(() => {
-    img.remove();
-  }, 2000);
-});
-</script>
-
-</body>
-</html>
+  img
