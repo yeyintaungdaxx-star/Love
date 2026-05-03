@@ -51,7 +51,6 @@ h1, p {
   margin-top: 20px;
 }
 
-/* BUTTONS */
 button {
   padding: 10px 18px;
   border: none;
@@ -59,8 +58,6 @@ button {
   font-size: 16px;
   cursor: pointer;
   position: absolute;
-  transition: 0.2s;
-  touch-action: manipulation;
 }
 
 #yesBtn {
@@ -75,6 +72,53 @@ button {
   top: 20px;
   background: #ff4fa3;
   color: white;
+}
+
+/* FLOATING HEARTS */
+.heart {
+  position: fixed;
+  top: -20px;
+  font-size: 20px;
+  animation: fall linear forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
+
+/* FULL SCREEN LOVE OVERLAY */
+.love-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 0, 120, 0.15);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  animation: fadeIn 0.5s ease;
+  z-index: 999;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.love-text {
+  font-size: 28px;
+  color: white;
+  text-align: center;
+  animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+  0% {transform: scale(0);}
+  100% {transform: scale(1);}
 }
 </style>
 </head>
@@ -92,21 +136,51 @@ button {
 </div>
 
 <script>
+const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 
-/* NO BUTTON MOVE ONLY */
+/* NO MOVE ONLY */
 noBtn.addEventListener("click", () => {
-
   const maxX = window.innerWidth - 100;
   const maxY = window.innerHeight - 100;
 
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
   noBtn.style.right = "auto";
-  noBtn.style.bottom = "auto";
+});
+
+/* YES BEAUTIFUL ANIMATION */
+yesBtn.addEventListener("click", () => {
+
+  // screen overlay
+  const screen = document.createElement("div");
+  screen.className = "love-screen";
+  screen.innerHTML = `
+    <div class="love-text">
+      💖 ကိုယ်အရမ်းပျော်သွားပြီ 💖<br/>
+      မီ ကိုချစ်တယ် 😭💞
+    </div>
+  `;
+
+  document.body.appendChild(screen);
+
+  // floating hearts
+  for(let i = 0; i < 60; i++){
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = "💗";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.animationDuration = (2 + Math.random() * 3) + "s";
+    document.body.appendChild(h);
+
+    setTimeout(() => h.remove(), 5000);
+  }
+
+  // auto remove overlay after a bit
+  setTimeout(() => {
+    screen.remove();
+  }, 4000);
+
 });
 </script>
 
