@@ -47,30 +47,33 @@ h1, p { color: white; }
   margin-top: 20px;
 }
 
-button {
-  padding: 10px 14px;
-  border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  position: absolute;
-  width: 120px;
-}
-
 /* YES */
 #yesBtn {
+  position: absolute;
   left: 10px;
   top: 20px;
+  width: 120px;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
   background: white;
   color: #ff4fa3;
+  cursor: pointer;
 }
 
-/* NO */
+/* NO (IMPORTANT FIX → fixed) */
 #noBtn {
-  right: 10px;
-  top: 20px;
+  position: fixed;
+  left: 60%;
+  top: 55%;
+  width: 120px;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
   background: #ff4fa3;
   color: white;
+  cursor: pointer;
+  transition: 0.15s;
 }
 
 /* POPUP IMAGE */
@@ -89,7 +92,7 @@ button {
   100% { transform: translateX(-50%) scale(1); }
 }
 
-/* LOVE SCREEN */
+/* YES SCREEN */
 .love-screen {
   position: fixed;
   inset: 0;
@@ -123,39 +126,35 @@ button {
 
   <div class="buttons">
     <button id="yesBtn">Yes 💗</button>
-    <button id="noBtn">No 😭</button>
   </div>
 </div>
+
+<button id="noBtn">No 😭</button>
 
 <script>
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 
 let noImg = null;
+
+const noImages = ["cat1.jpg","cat2.jpg","cat3.jpg","cat4.jpg"];
 let index = 0;
 
-const noImages = [
-  "cat1.jpg",
-  "cat2.jpg",
-  "cat3.jpg",
-  "cat4.jpg"
-];
-
-/* YES CLICK */
+/* YES */
 yesBtn.addEventListener("click", () => {
 
   const screen = document.createElement("div");
   screen.className = "love-screen";
 
   screen.innerHTML = `
-    <div class="love-text"> အရမ်းချစ်တယ်💞🎀</div>
+    <div class="love-text"> အရမ်းချစ်တယ်💞🎀 </div>
     <img src="love.jpg">
   `;
 
   document.body.appendChild(screen);
 });
 
-/* NO CLICK (SAFE MOBILE MOVE) */
+/* NO (NEVER DISAPPEAR + SAFE MOVE) */
 noBtn.addEventListener("click", () => {
 
   const btnWidth = 120;
@@ -169,10 +168,8 @@ noBtn.addEventListener("click", () => {
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-  noBtn.style.right = "auto";
-  noBtn.style.bottom = "auto";
 
-  // image change on each click
+  // image change
   if (noImg) noImg.remove();
 
   noImg = document.createElement("img");
